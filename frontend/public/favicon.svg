@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+  <!-- Badge/Tag shape -->
+  <rect x="4" y="6" width="24" height="22" rx="4" ry="4" fill="#4F46E5"/>
+  <!-- Lanyard hole -->
+  <circle cx="16" cy="6" r="2.5" fill="#0F172A"/>
+  <!-- Lightning bolt -->
+  <polygon points="18,12 13,19 16,19 14,26 19,18 16,18" fill="#06B6D4"/>
+  <!-- Shine -->
+  <rect x="4" y="6" width="24" height="22" rx="4" ry="4" fill="url(#shine)" opacity="0.15"/>
+  <defs>
+    <linearGradient id="shine" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffffff"/>
+      <stop offset="100%" style="stop-color:#ffffff" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+</svg>
