@@ -1,86 +1,85 @@
-# 🚀 EventByte: Premium Event Management Platform
+# 🌌 EventByte: Platinum Edition
 
-EventByte is a high-performance, production-ready full-stack platform designed for college hackathons, workshops, and meetups. 
-
-## ⚡ Tech Stack
-
-### Frontend
-- **React 18** (Vite 5)
-- **TypeScript 5**
-- **Tailwind CSS v3** (Utility-first styling)
-- **shadcn/ui** (Premium accessible components)
-- **Zustand** (Lightweight state management)
-- **Framer Motion** (Dynamic animations)
-- **TanStack Query v5** (Server state management)
-- **Socket.io-client** (Real-time features)
-
-### Backend
-- **Fastify 4** (High-performance web framework)
-- **Drizzle ORM** (Type-safe SQL)
-- **PostgreSQL 16** (Core database)
-- **Redis 7** (Caching & Queues)
-- **BullMQ** (Background job processing)
-- **Socket.io** (Real-time broadcasts)
-- **Argon2** (Secure password hashing)
+EventByte is a high-performance, cinematic event management platform redesigned for the "Digital Aura" / "Stitch Platinum" design system. It provides a premium suite for hosting, managing, and judging world-class hackathons, seminars, and workshops.
 
 ---
 
-## 🛠️ Getting Started (Workflow)
+## ✨ The Platinum Overhaul (v2.0)
+The latest version introduces a comprehensive visual and structural transformation:
 
-### 1. Requirements
-- **Node.js v20+**
-- **Docker Desktop** (Required for DB & Redis)
-
-### 2. Infrastructure Setup (Isolated Environment)
-In Node.js, we use `node_modules` (via `npm install`) to isolate all project libraries. This functions similarly to a Python virtual environment, ensuring the project libraries don't interfere with your system.
-
-```powershell
-# Open Docker Desktop first
-# Then start the database and cache
-docker-compose up -d
-```
-
-### 3. Backend Setup
-```powershell
-cd backend
-npm install
-# Sync database schema
-npm run db:push
-# Start development server
-npm run dev
-```
-
-### 4. Frontend Setup
-```powershell
-cd frontend
-npm install
-# Start development server
-npm run dev
-```
+- **Digital Aura Design System**: A foundation of deep charcoal backgrounds, holographic mesh gradients, and advanced glassmorphism.
+- **The "Blade" Console**: Unified, role-specific floating sidebars for **Admin** (Control Center Red), **Organizer** (Primary Purple), and **Participant** (Community Cyan).
+- **Interactive Team Cards**: 3D parallax tilting cards with responsive mouse-follow logic and glowing accents.
+- **Cinematic Auth**: Immersive split-screen authentication flows featuring custom-generated 3D holographic assets.
 
 ---
 
-## 🔑 Environment Variables
+## 🚀 Key Features
 
-### Backend (`/backend/.env`)
-- `DATABASE_URL`: Connection string for PostgreSQL.
-- `JWT_ACCESS_SECRET`: Secret key for auth tokens.
-- `SMTP_USER / SMTP_PASS`: Credentials for email notifications.
+### 📅 Event Lifecycle & Management
+- **Universal Dashboard**: Real-time stats and management tools for event organizers.
+- **Multi-Tenant Branding**: Dynamic CSS variable-based branding for every event instance.
+- **Force Staffing**: Advanced team management with role-based permissions and hierarchical access control.
 
-### Frontend (`/frontend/.env`)
-- `VITE_API_BASE_URL`: Pointer to the Backend API.
-- `VITE_APP_NAME`: Dynamic branding title.
-- `VITE_APP_PRIMARY_COLOR`: Dynamic theme color (CSS).
+### ⚖️ Precision Judging Module
+- **Live Scoring**: Interactive judging interface for evaluating submissions in real-time.
+- **Dynamic Leaderboards**: Real-time leaderboard updates powered by Socket.io for high-stakes competition.
+- **Judge Management**: Efficient onboarding and assignment of judges to event tracks.
+
+### 📡 Real-time Communication
+- **Global Announcements**: Instant toast notifications for all active participants.
+- **Event Group Chat**: Seamless real-time coordination via integrated socket communication.
+- **Check-in Engine**: High-speed registration and QR-ready participant check-in flow.
 
 ---
 
-## 📡 Real-time Features
-The platform captures real-time events globally:
-- `announcement:new`: Broadcasts toast notifications to all active users.
-- `chat:message`: Powers the live event group chat.
-- `leaderboard:updated`: Live score updates for judging modules.
+## 🛠️ Technology Stack
+
+### Frontend (Cinematic Tier)
+- **React 18 & Vite**: Lightning-fast development and build cycles.
+- **Tailwind CSS v3**: Advanced utility-first styling with custom "Aura" extensions.
+- **Framer Motion**: High-end physics-based animations and layout transitions.
+- **Zustand**: Lightweight, reactive state management.
+- **Lucide React**: Modern, consistent iconography.
+
+### Backend (Edge Tier)
+- **Fastify 4**: High-performance Node.js framework optimized for low latency.
+- **Drizzle ORM**: Next-generation TypeScript ORM for type-safe database interactions.
+- **PostgreSQL 16**: Robust, scalable core data storage.
+- **Redis & BullMQ**: Scalable background processing for certificates and notifications.
+
+---
 
 ## 📁 Project Structure
-- `/backend`: Fastify API, Database schemas, and Background jobs.
-- `/frontend`: React application, dynamic branding logic, and UI components.
-- `/docker-compose.yml`: Infrastructure-as-code for Postgres & Redis.
+
+```bash
+├── backend/            # Fastify API, Database Schemas, & Job Processors
+├── frontend/           # React Application & Platinum Design System
+│   ├── src/components/ # Reusable UI & Layout Components
+│   ├── src/pages/      # Feature-specific Page Modules
+│   └── src/styles/     # Core Global Theme & Design Tokens
+├── docker-compose.yml  # Infrastructure-as-code for Postgres & Redis
+└── nginx.conf          # Production Reverse Proxy Configuration
+```
+
+---
+
+## 🔑 Installation & Deployment
+
+1. **Clone the Identity**: `git clone https://github.com/nischay/EventByte.git`
+2. **Ignite Infrastructure**: `docker-compose up -d`
+3. **Initialize Backend**:
+   ```bash
+   cd backend && npm install
+   npm run db:push
+   npm run dev
+   ```
+4. **Deploy Frontend**:
+   ```bash
+   cd frontend && npm install
+   npm run dev
+   ```
+
+---
+
+*Built with ❤️ by the EventByte Visionary Team.*
