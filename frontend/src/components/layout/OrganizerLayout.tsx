@@ -3,7 +3,7 @@ import { useAuthStore } from '@/store/authStore';
 import { AppLogo } from '@/components/shared/AppLogo';
 import { LayoutDashboard, Calendar, Edit3, LogOut } from 'lucide-react';
 import toast from 'react-hot-toast';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 
 export const OrganizerLayout = () => {
     const navigate = useNavigate();

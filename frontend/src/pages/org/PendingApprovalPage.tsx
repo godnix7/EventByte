@@ -3,8 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '@/store/authStore';
 import { api } from '@/lib/api';
 import { AppLogo } from '@/components/shared/AppLogo';
-import { Clock, RefreshCcw, LogOut, ChevronRight, Loader2, ShieldAlert } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { Clock, RefreshCcw, LogOut, Loader2, ShieldAlert } from 'lucide-react';
+import { motion } from 'framer-motion';
 import toast from 'react-hot-toast';
 
 export default function PendingApprovalPage() {
@@ -64,7 +64,7 @@ export default function PendingApprovalPage() {
                     <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-1 bg-gradient-to-r from-transparent via-amber-500/40 to-transparent" />
 
                     <div className="mb-10">
-                        <AppLogo size="xl" />
+                        <AppLogo size="lg" />
                     </div>
 
                     <motion.div 

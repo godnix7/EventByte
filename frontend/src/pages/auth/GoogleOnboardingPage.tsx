@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '@/store/authStore';
 import { api } from '@/lib/api';
-import { appConfig } from '@/config/app.config';
 import { AppLogo } from '@/components/shared/AppLogo';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Sparkles, UserCheck, Phone, School, Compass, ChevronRight, Loader2 } from 'lucide-react';
@@ -95,7 +94,7 @@ export default function GoogleOnboardingPage() {
                         transition={{ delay: 0.2 }}
                         className="inline-block p-4 bg-white/5 backdrop-blur-3xl rounded-[2.5rem] border border-white/10 shadow-2xl mb-6 ring-1 ring-white/20"
                     >
-                        <AppLogo size="xl" showText={false} />
+                        <AppLogo size="lg" showText={false} />
                     </motion.div>
                     
                     <h1 className="text-4xl sm:text-5xl font-black tracking-tighter text-white mb-3">

@@ -4,7 +4,7 @@ import { useEvent } from '@/hooks/useEvents';
 import { appConfig } from '@/config/app.config';
 import { Plus, Users, Shield, Trash2, Edit2, Scale } from 'lucide-react';
 import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import JudgesManager from '@/components/events/org/JudgesManager';
 import { InteractiveTeamCard } from '@/components/shared/InteractiveTeamCard';
 

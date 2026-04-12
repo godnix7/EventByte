@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { api } from '@/lib/api';
-import { Users, Plus, Edit, Trash2 } from 'lucide-react';
+import { Users, Plus, Trash2 } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 
 interface Member {
