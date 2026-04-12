@@ -4,6 +4,8 @@
   "description": "Event management platform",
   "main": "index.js",
   "scripts": {
+    "postinstall": "npm install --prefix frontend",
+    "build": "npm run build --prefix frontend",
     "install-all": "npm install --prefix frontend",
     "dev:frontend": "npm run dev --prefix frontend",
     "dev:backend": "powershell -Command \"cd backend; .\\venv\\Scripts\\activate; python manage.py runserver\"",
