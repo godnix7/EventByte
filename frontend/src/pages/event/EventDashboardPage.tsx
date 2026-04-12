@@ -4,7 +4,8 @@ import { AppLogo } from '@/components/shared/AppLogo';
 import { Calendar, Users, Share2, Star, FileUp, Edit } from 'lucide-react';
 import { GroupChatWidget } from '@/components/shared/GroupChatWidget';
 import { useQuery } from '@tanstack/react-query';
-import axios from 'axios';
+import { api } from '@/lib/api';
+import { appConfig } from '@/config/app.config';
 import FeedbackModal from '@/components/engagement/FeedbackModal';
 import SubmissionModal from '@/components/engagement/SubmissionModal';
 import { useState } from 'react';
@@ -31,7 +32,7 @@ export default function EventDashboardPage() {
         queryKey: ['feedback', event?.id],
         queryFn: async () => {
             try {
-                const res = await axios.get(`/api/communication/events/${event?.id}/feedback`);
+                const res = await api.get(`/communication/events/${event?.id}/feedback`);
                 return Array.isArray(res.data) ? res.data : [];
             } catch (err) {
                 return [];
@@ -220,7 +221,7 @@ export default function EventDashboardPage() {
                                     <Share2 size={16} /> Share Event
                                 </button>
                                 <button
-                                    onClick={() => window.open(`/api/calendar/${event.id}/ics`, '_blank')}
+                                    onClick={() => window.open(`${appConfig.apiBaseUrl}/calendar/${event.id}/ics`, '_blank')}
                                     className="w-full flex items-center justify-center gap-2 py-2 border border-transparent hover:border-border rounded-md hover:bg-accent text-sm font-medium transition-colors text-muted-foreground hover:text-foreground"
                                 >
                                     <Calendar size={16} /> Add to Calendar

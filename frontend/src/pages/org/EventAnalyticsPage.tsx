@@ -1,7 +1,8 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import axios from 'axios';
+import { api } from '@/lib/api';
+import { appConfig } from '@/config/app.config';
 import { BarChart3, Users, Clock, Star, TrendingUp, Download, PieChart, Activity } from 'lucide-react';
 import { motion } from 'framer-motion';
 
@@ -11,13 +12,13 @@ const EventAnalyticsPage: React.FC = () => {
     const { data: stats, isLoading } = useQuery({
         queryKey: ['event-analytics', id],
         queryFn: async () => {
-            const res = await axios.get(`/api/events/${id}/analytics`);
+            const res = await api.get(`/events/${id}/analytics`);
             return res.data;
         }
     });
 
     const handleExportCSV = async () => {
-        window.open(`/api/events/${id}/export/csv`, '_blank');
+        window.open(`${appConfig.apiBaseUrl}/events/${id}/export/csv`, '_blank');
     };
 
     if (isLoading) return <div className="p-20 text-center animate-pulse">Calculating Insights...</div>;

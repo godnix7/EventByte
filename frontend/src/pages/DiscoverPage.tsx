@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import axios from 'axios';
+import { api } from '@/lib/api';
 import { Search, Calendar, MapPin, Tag, ChevronRight, Bookmark } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { format } from 'date-fns';
@@ -32,7 +32,7 @@ const DiscoverPage: React.FC = () => {
     const { data: categoriesData } = useQuery({
         queryKey: ['categories'],
         queryFn: async () => {
-            const res = await axios.get('/api/admin/categories');
+            const res = await api.get('/admin/categories');
             return res.data.categories;
         }
     });
@@ -43,7 +43,7 @@ const DiscoverPage: React.FC = () => {
             const params: any = { sort };
             if (search) params.q = search;
             if (category) params.categoryId = category;
-            const res = await axios.get('/api/events/discover', { params });
+            const res = await api.get('/events/discover', { params });
             return res.data.events as Event[];
         },
         enabled: true
@@ -51,7 +51,7 @@ const DiscoverPage: React.FC = () => {
 
     const handleBookmark = async (eventId: string) => {
         try {
-            await axios.post(`/api/engagement/events/${eventId}/bookmark`);
+            await api.post(`/engagement/events/${eventId}/bookmark`);
             toast.success('Event saved to bookmarks!');
         } catch (err: any) {
             toast.error(err.response?.data?.message || 'Failed to save event');

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
-import axios from 'axios';
+import { api } from '@/lib/api';
 import { Star, Send, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { toast } from 'react-hot-toast';
@@ -18,7 +18,7 @@ const FeedbackModal: React.FC<FeedbackModalProps> = ({ eventId, isOpen, onClose,
 
     const mutation = useMutation({
         mutationFn: async (data: { rating: number; comment: string }) => {
-            await axios.post(`/api/engagement/events/${eventId}/feedback`, data);
+            await api.post(`/engagement/events/${eventId}/feedback`, data);
         },
         onSuccess: () => {
             toast.success('Thank you for your feedback!');

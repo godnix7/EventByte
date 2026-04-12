@@ -1,7 +1,7 @@
 import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useQuery, useMutation } from '@tanstack/react-query';
-import axios from 'axios';
+import { api } from '@/lib/api';
 import { FileUp, Search, ExternalLink, CheckCircle2, XCircle, Clock, ChevronLeft } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { toast } from 'react-hot-toast';
@@ -13,14 +13,14 @@ const SubmissionReviewPage: React.FC = () => {
     const { data: submissions, isLoading, refetch } = useQuery({
         queryKey: ['event-submissions', id],
         queryFn: async () => {
-            const res = await axios.get(`/api/events/${id}/submissions`);
+            const res = await api.get(`/events/${id}/submissions`);
             return res.data.submissions;
         }
     });
 
     const statusMutation = useMutation({
         mutationFn: async ({ submissionId, status }: { submissionId: string, status: string }) => {
-            await axios.patch(`/api/events/${id}/submissions/${submissionId}`, { status });
+            await api.patch(`/events/${id}/submissions/${submissionId}`, { status });
         },
         onSuccess: () => {
             toast.success('Submission status updated');

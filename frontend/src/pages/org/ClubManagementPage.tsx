@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import axios from 'axios';
+import { api } from '@/lib/api';
 import { Users, Plus, Edit, Trash2 } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 
@@ -18,15 +18,15 @@ export default function ClubManagementPage() {
     useEffect(() => {
         if (!id) return;
         // Fetch club members
-        axios
-            .get(`/api/clubs/${id}/members`)
+        api
+            .get(`/clubs/${id}/members`)
             .then((res) => setMembers(res.data))
             .catch((err) => toast.error(err.response?.data?.message || 'Failed to load members'));
     }, [id]);
 
     const updateRole = (memberId: string, role: string) => {
-        axios
-            .patch(`/api/clubs/${id}/members/${memberId}`, { role })
+        api
+            .patch(`/clubs/${id}/members/${memberId}`, { role })
             .then(() => {
                 setMembers((prev) => prev.map((m) => (m.id === memberId ? { ...m, role } : m)));
                 toast.success('Role updated');
@@ -35,8 +35,8 @@ export default function ClubManagementPage() {
     };
 
     const removeMember = (memberId: string) => {
-        axios
-            .delete(`/api/clubs/${id}/members/${memberId}`)
+        api
+            .delete(`/clubs/${id}/members/${memberId}`)
             .then(() => {
                 setMembers((prev) => prev.filter((m) => m.id !== memberId));
                 toast.success('Member removed');
@@ -46,8 +46,8 @@ export default function ClubManagementPage() {
 
     const addMember = () => {
         if (!newMemberEmail) return;
-        axios
-            .post(`/api/clubs/${id}/members`, { email: newMemberEmail })
+        api
+            .post(`/clubs/${id}/members`, { email: newMemberEmail })
             .then((res) => {
                 setMembers((prev) => [...prev, res.data]);
                 toast.success('Member added');

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useQuery, useMutation } from '@tanstack/react-query';
-import axios from 'axios';
+import { api } from '@/lib/api';
 import { Bookmark, Calendar, Trash2, ChevronRight, Sparkles } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
@@ -11,14 +11,14 @@ const SavedEventsPage: React.FC = () => {
     const { data: bookmarks, isLoading } = useQuery({
         queryKey: ['bookmarks'],
         queryFn: async () => {
-            const res = await axios.get('/api/engagement/bookmarks');
+            const res = await api.get('/engagement/bookmarks');
             return res.data.bookmarks;
         }
     });
 
     const removeBookmarkMutation = useMutation({
         mutationFn: async (eventId: string) => {
-            await axios.delete(`/api/engagement/events/${eventId}/bookmark`);
+            await api.delete(`/engagement/events/${eventId}/bookmark`);
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['bookmarks'] });

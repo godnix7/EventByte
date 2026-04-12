@@ -6,15 +6,17 @@ import { api } from '@/lib/api';
 import { appConfig } from '@/config/app.config';
 import { AppLogo } from '@/components/shared/AppLogo';
 import toast from 'react-hot-toast';
+import { motion } from 'framer-motion';
+import { Users, Zap } from 'lucide-react';
 
 export default function RegisterPage() {
     const [formData, setFormData] = useState({
         username: '',
         email: '',
         password: '',
-        firstName: '',
-        lastName: '',
-        roleChoice: 'participant',
+        first_name: '',
+        last_name: '',
+        role_choice: 'participant',
     });
     const [loading, setLoading] = useState(false);
     const { setAuth } = useAuthStore();
@@ -35,11 +37,31 @@ export default function RegisterPage() {
         setLoading(true);
 
         try {
-            await api.post('/auth/register', formData);
+            await api.post('/auth/register/', formData);
             toast.success('Account created! Please sign in.');
             navigate('/login');
         } catch (error: any) {
-            toast.error(error.response?.data?.message || 'Registration failed');
+            const errorData = error.response?.data;
+            let errorMessage = 'Registration failed';
+            
+            if (typeof errorData === 'object' && errorData !== null) {
+                // If there's a specific message field
+                if (errorData.message) errorMessage = errorData.message;
+                // If there are field errors (DRF style)
+                else if (errorData.non_field_errors) errorMessage = errorData.non_field_errors[0];
+                else {
+                    const firstKey = Object.keys(errorData)[0];
+                    if (firstKey) {
+                        const firstError = errorData[firstKey];
+                        errorMessage = Array.isArray(firstError) ? firstError[0] : firstError;
+                        // Prepend field name for clarity if it's not a generic message
+                        if (firstKey !== 'error' && firstKey !== 'detail') {
+                            errorMessage = `${firstKey}: ${errorMessage}`;
+                        }
+                    }
+                }
+            }
+            toast.error(errorMessage);
         } finally {
             setLoading(false);
         }
@@ -69,89 +91,182 @@ export default function RegisterPage() {
     };
 
     return (
-        <div className="flex min-h-screen items-center justify-center p-4 bg-background">
-            <div className="w-full max-w-md p-8 border rounded-2xl bg-card shadow-lg flex flex-col items-center">
-                <AppLogo size="lg" />
-                <h2 className="text-2xl font-bold mt-6 mb-2">Create an account</h2>
-                <p className="text-muted-foreground text-sm mb-6 text-center">Join {appConfig.name} today to start managing events.</p>
+        <div className="flex min-h-screen bg-background overflow-hidden relative">
+            {/* Background Glows */}
+            <div className="absolute top-0 left-0 w-full h-full pointer-events-none">
+                <div className="absolute top-1/2 left-1/4 w-[600px] h-[600px] bg-secondary/10 rounded-full blur-[150px]" />
+                <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-primary/10 rounded-full blur-[120px]" />
+            </div>
 
-                <form onSubmit={handleRegister} className="w-full flex flex-col gap-4">
-                    <div className="grid grid-cols-2 gap-4">
-                        <div className="flex flex-col gap-1">
-                            <label className="text-sm font-medium">First Name</label>
-                            <input name="firstName" type="text" required value={formData.firstName} onChange={handleChange} className="px-3 py-2 border rounded-md bg-transparent focus:ring-2 focus:ring-primary outline-none transition-all" placeholder="John" />
-                        </div>
-                        <div className="flex flex-col gap-1">
-                            <label className="text-sm font-medium">Last Name</label>
-                            <input name="lastName" type="text" required value={formData.lastName} onChange={handleChange} className="px-3 py-2 border rounded-md bg-transparent focus:ring-2 focus:ring-primary outline-none transition-all" placeholder="Doe" />
-                        </div>
-                    </div>
+            {/* Left Column: Visual */}
+            <div className="hidden lg:flex flex-1 flex-col items-center justify-center p-20 relative overflow-hidden bg-white/[0.01] border-r border-white/5">
+                <motion.div
+                    initial={{ opacity: 0, scale: 0.9, rotate: -5 }}
+                    animate={{ opacity: 1, scale: 1, rotate: 0 }}
+                    transition={{ duration: 1.5, ease: "easeOut" }}
+                    className="relative z-10"
+                >
+                    <img 
+                        src="/assets/3d-ticket.png" 
+                        alt="Join The Force" 
+                        className="w-[450px] h-auto animate-float drop-shadow-[0_0_80px_rgba(var(--secondary)/0.3)]"
+                    />
+                </motion.div>
+                <div className="relative z-10 mt-16 text-center max-w-lg">
+                    <h1 className="text-6xl font-black mb-6 tracking-tight text-glow" style={{ textShadow: '0 0 20px hsla(var(--secondary) / 0.4)' }}>Join the Force</h1>
+                    <p className="text-xl text-muted-foreground font-medium leading-relaxed">
+                        Become part of the global community setting the new standard for digital and physical experiences.
+                    </p>
+                </div>
+            </div>
 
-                    <div className="flex flex-col gap-1">
-                        <label className="text-sm font-medium">Username</label>
-                        <input name="username" type="text" required value={formData.username} onChange={handleChange} className="px-3 py-2 border rounded-md bg-transparent focus:ring-2 focus:ring-primary outline-none transition-all" placeholder="johndoe123" />
-                    </div>
+            {/* Right Column: Auth Form */}
+            <div className="flex-1 flex flex-col items-center justify-center p-6 lg:p-12 relative z-10 overflow-y-auto custom-scrollbar">
+                <motion.div
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    className="w-full max-w-xl py-12"
+                >
+                    <div className="glass-dark p-10 lg:p-14 rounded-[3.5rem] shadow-2xl border border-white/10 relative overflow-hidden group">
+                        <div className="absolute -bottom-24 -left-24 w-64 h-64 bg-secondary/10 blur-[80px]" />
+                        
+                        <div className="relative z-10 flex flex-col items-center">
+                            <Link to="/" className="mb-12 hover:scale-105 transition-transform">
+                                <AppLogo size="lg" />
+                            </Link>
+                            
+                            <h2 className="text-4xl font-black mb-3 tracking-tight">Create Identity</h2>
+                            <p className="text-muted-foreground font-medium text-sm mb-12 text-center uppercase tracking-[0.3em] opacity-60">Begin Global Enrollment</p>
 
-                    <div className="flex flex-col gap-1">
-                        <label className="text-sm font-medium">Email</label>
-                        <input name="email" type="email" required value={formData.email} onChange={handleChange} className="px-3 py-2 border rounded-md bg-transparent focus:ring-2 focus:ring-primary outline-none transition-all" placeholder="john@example.com" />
-                    </div>
+                            <form onSubmit={handleRegister} className="w-full flex flex-col gap-8">
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                    <div className="space-y-2">
+                                        <label className="text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground ml-1">First Name</label>
+                                        <input
+                                            name="first_name"
+                                            required
+                                            value={formData.first_name}
+                                            onChange={handleChange}
+                                            className="w-full px-6 py-4 rounded-2xl bg-white/5 border border-white/5 focus:border-secondary/50 focus:ring-4 focus:ring-secondary/10 outline-none transition-all font-bold"
+                                            placeholder="Caden"
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground ml-1">Last Name</label>
+                                        <input
+                                            name="last_name"
+                                            required
+                                            value={formData.last_name}
+                                            onChange={handleChange}
+                                            className="w-full px-6 py-4 rounded-2xl bg-white/5 border border-white/5 focus:border-secondary/50 focus:ring-4 focus:ring-secondary/10 outline-none transition-all font-bold"
+                                            placeholder="Sterling"
+                                        />
+                                    </div>
+                                </div>
 
-                    <div className="flex flex-col gap-1">
-                        <label className="text-sm font-medium">Password</label>
-                        <input name="password" type="password" required value={formData.password} onChange={handleChange} className="px-3 py-2 border rounded-md bg-transparent focus:ring-2 focus:ring-primary outline-none transition-all" placeholder="••••••••" />
-                    </div>
+                                <div className="space-y-2">
+                                    <label className="text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground ml-1">Universal Username</label>
+                                    <input
+                                        name="username"
+                                        required
+                                        value={formData.username}
+                                        onChange={handleChange}
+                                        className="w-full px-6 py-4 rounded-2xl bg-white/5 border border-white/5 focus:border-secondary/50 focus:ring-4 focus:ring-secondary/10 outline-none transition-all font-bold"
+                                        placeholder="csterling_01"
+                                    />
+                                </div>
 
-                    <div className="flex flex-col gap-2 mt-2">
-                        <label className="text-sm font-medium">I want to...</label>
-                        <div className="flex gap-4">
-                            <label className="flex items-center gap-2 cursor-pointer border rounded-md p-3 flex-1">
-                                <input type="radio" name="roleChoice" value="participant" checked={formData.roleChoice === 'participant'} onChange={handleChange} className="accent-primary" />
-                                <span className="text-sm font-medium">Join Events</span>
-                            </label>
-                            <label className="flex items-center gap-2 cursor-pointer border rounded-md p-3 flex-1">
-                                <input type="radio" name="roleChoice" value="organizer" checked={formData.roleChoice === 'organizer'} onChange={handleChange} className="accent-primary" />
-                                <span className="text-sm font-medium">Organize Events</span>
-                            </label>
-                        </div>
-                        {formData.roleChoice === 'organizer' && (
-                            <p className="text-xs text-amber-600 dark:text-amber-500 mt-1">
-                                Note: Organizer accounts must be manually approved by an admin before you can create events.
+                                <div className="space-y-2">
+                                    <label className="text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground ml-1">Encrypted Email</label>
+                                    <input
+                                        name="email"
+                                        type="email"
+                                        required
+                                        value={formData.email}
+                                        onChange={handleChange}
+                                        className="w-full px-6 py-4 rounded-2xl bg-white/5 border border-white/5 focus:border-secondary/50 focus:ring-4 focus:ring-secondary/10 outline-none transition-all font-bold"
+                                        placeholder="user@neural.link"
+                                    />
+                                </div>
+
+                                <div className="space-y-2">
+                                    <label className="text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground ml-1">Secure Passkey</label>
+                                    <input
+                                        name="password"
+                                        type="password"
+                                        required
+                                        value={formData.password}
+                                        onChange={handleChange}
+                                        className="w-full px-6 py-4 rounded-2xl bg-white/5 border border-white/5 focus:border-secondary/50 focus:ring-4 focus:ring-secondary/10 outline-none transition-all font-bold"
+                                        placeholder="••••••••"
+                                    />
+                                </div>
+
+                                <div className="space-y-4">
+                                    <label className="text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground ml-1">Sector Selection</label>
+                                    <div className="grid grid-cols-2 gap-4">
+                                        <label className={`relative flex flex-col items-center gap-3 p-6 rounded-3xl border transition-all cursor-pointer group/role ${
+                                            formData.role_choice === 'participant' ? 'bg-secondary/10 border-secondary shadow-lg shadow-secondary/10' : 'bg-white/5 border-white/10 hover:border-white/20'
+                                        }`}>
+                                            <input type="radio" name="role_choice" value="participant" checked={formData.role_choice === 'participant'} onChange={handleChange} className="hidden" />
+                                            <div className={`p-3 rounded-2xl transition-colors ${formData.role_choice === 'participant' ? 'bg-secondary text-white' : 'bg-white/10'}`}>
+                                                <Users size={20} />
+                                            </div>
+                                            <span className="text-sm font-black uppercase tracking-widest">Joiner</span>
+                                        </label>
+                                        <label className={`relative flex flex-col items-center gap-3 p-6 rounded-3xl border transition-all cursor-pointer group/role ${
+                                            formData.role_choice === 'organizer' ? 'bg-primary/10 border-primary shadow-lg shadow-primary/10' : 'bg-white/5 border-white/10 hover:border-white/20'
+                                        }`}>
+                                            <input type="radio" name="role_choice" value="organizer" checked={formData.role_choice === 'organizer'} onChange={handleChange} className="hidden" />
+                                            <div className={`p-3 rounded-2xl transition-colors ${formData.role_choice === 'organizer' ? 'bg-primary text-white' : 'bg-white/10'}`}>
+                                                <Zap size={20} />
+                                            </div>
+                                            <span className="text-sm font-black uppercase tracking-widest">Architect</span>
+                                        </label>
+                                    </div>
+                                    {formData.role_choice === 'organizer' && (
+                                        <div className="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/20">
+                                            <p className="text-[10px] text-amber-500 font-bold uppercase tracking-widest leading-relaxed">
+                                                Note: Architect status requires verification by the High Council.
+                                            </p>
+                                        </div>
+                                    )}
+                                </div>
+
+                                <button
+                                    type="submit"
+                                    disabled={loading}
+                                    className="group relative mt-4 h-18 w-full rounded-[2rem] bg-secondary text-white font-black text-xl transition-all hover:scale-[1.02] active:scale-95 shadow-[0_25px_50px_-12px_rgba(var(--secondary)/0.5)] overflow-hidden"
+                                >
+                                    <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                                    {loading ? 'Initializing...' : 'Initialize Identity'}
+                                </button>
+                            </form>
+
+                            {appConfig.googleAuthEnabled && (
+                                <div className="w-full mt-12 flex flex-col items-center">
+                                    <div className="flex items-center w-full mb-8">
+                                        <hr className="flex-1 border-white/10" />
+                                        <span className="px-4 text-[10px] text-muted-foreground font-black uppercase tracking-[0.3em]">Neural Link</span>
+                                        <hr className="flex-1 border-white/10" />
+                                    </div>
+                                    <GoogleLogin
+                                        onSuccess={handleGoogleSuccess}
+                                        onError={() => toast.error('Link Failed')}
+                                        useOneTap
+                                    />
+                                </div>
+                            )}
+
+                            <p className="mt-14 text-sm text-center font-bold text-muted-foreground">
+                                Already identified?{' '}
+                                <Link to="/login" className="text-secondary hover:underline">
+                                    Verify Session
+                                </Link>
                             </p>
-                        )}
-                    </div>
-
-                    <button
-                        type="submit"
-                        disabled={loading}
-                        className="mt-4 px-4 py-2 text-white font-medium rounded-md disabled:opacity-70 transition-opacity"
-                        style={{ backgroundColor: appConfig.primaryColor }}
-                    >
-                        {loading ? 'Creating account...' : 'Sign Up'}
-                    </button>
-                </form>
-
-                {appConfig.googleAuthEnabled && (
-                    <div className="w-full mt-6 flex flex-col items-center">
-                        <div className="flex items-center w-full mb-4">
-                            <hr className="flex-1 border-muted" />
-                            <span className="px-3 text-xs text-muted-foreground uppercase">Or continue with</span>
-                            <hr className="flex-1 border-muted" />
                         </div>
-                        <GoogleLogin
-                            onSuccess={handleGoogleSuccess}
-                            onError={() => toast.error('Google Sign-In Failed')}
-                            useOneTap
-                        />
                     </div>
-                )}
-
-                <p className="mt-6 text-sm text-center text-muted-foreground">
-                    Already have an account?{' '}
-                    <Link to="/login" className="font-medium hover:underline" style={{ color: appConfig.primaryColor }}>
-                        Sign In
-                    </Link>
-                </p>
+                </motion.div>
             </div>
         </div>
     );

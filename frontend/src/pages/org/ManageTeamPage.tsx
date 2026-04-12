@@ -4,8 +4,9 @@ import { useEvent } from '@/hooks/useEvents';
 import { appConfig } from '@/config/app.config';
 import { Plus, Users, Shield, Trash2, Edit2, Scale } from 'lucide-react';
 import { useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import JudgesManager from '@/components/events/org/JudgesManager';
+import { InteractiveTeamCard } from '@/components/shared/InteractiveTeamCard';
 
 const AVAILABLE_PERMISSIONS = [
     { id: 'MANAGE_EVENT', label: 'Manage Event Details', description: 'Can edit title, description, and settings' },
@@ -118,86 +119,61 @@ export default function ManageTeamPage() {
             {activeTab === 'staff' && (
                 <div className="space-y-6">
                     <div className="flex items-center justify-between">
-                        <h2 className="text-xl font-bold">Event Staff ({staff?.length || 0})</h2>
+                        <div className="flex flex-col gap-1">
+                            <h2 className="text-3xl font-black tracking-tight">Event Force</h2>
+                            <p className="text-sm font-bold text-muted-foreground uppercase tracking-widest">({staff?.length || 0}) Active Personnel</p>
+                        </div>
                         <button
                             onClick={() => setIsAddMemberModalOpen(true)}
-                            className="flex items-center gap-2 px-4 py-2 rounded-full text-sm font-bold text-white shadow-lg transition-transform hover:scale-105 active:scale-95"
+                            className="group relative flex items-center gap-3 px-8 py-4 rounded-2xl text-sm font-black text-white shadow-2xl transition-all hover:scale-105 active:scale-95 overflow-hidden"
                             style={{ backgroundColor: appConfig.primaryColor }}
                         >
-                            <Plus size={18} />
-                            Add Member
+                            <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                            <Plus size={20} className="relative z-10" />
+                            <span className="relative z-10">Expand Team</span>
                         </button>
                     </div>
 
-                    <div className="bg-card rounded-3xl border border-border/50 shadow-sm overflow-hidden">
-                        <table className="w-full text-left">
-                            <thead className="bg-muted/30 text-xs font-bold uppercase tracking-wider text-muted-foreground border-b border-border/50">
-                                <tr>
-                                    <th className="px-6 py-4">User</th>
-                                    <th className="px-6 py-4">Roles</th>
-                                    <th className="px-6 py-4">Joined</th>
-                                    <th className="px-6 py-4 text-right">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody className="divide-y divide-border/50">
-                                {staff?.map((member: any) => (
-                                    <tr key={member.id} className="hover:bg-muted/10 transition-colors group">
-                                        <td className="px-6 py-4">
-                                            <div className="flex items-center gap-3">
-                                                <div className="w-10 h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold text-sm">
-                                                    {member.user.profilePhotoUrl ? (
-                                                        <img src={member.user.profilePhotoUrl} className="w-full h-full rounded-full object-cover" />
-                                                    ) : member.user.firstName[0]}
-                                                </div>
-                                                <div>
-                                                    <div className="font-bold">{member.user.firstName} {member.user.lastName}</div>
-                                                    <div className="text-xs text-muted-foreground">@{member.user.username}</div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td className="px-6 py-4">
-                                            <div className="flex flex-wrap gap-1.5">
-                                                {member.roleIds.length === 0 ? (
-                                                    <span className="text-xs text-muted-foreground italic">No roles assigned</span>
-                                                ) : (
-                                                    member.roleIds.map((rid: string) => {
-                                                        const role = roles?.find((r: any) => r.id === rid);
-                                                        return role ? (
-                                                            <span
-                                                                key={role.id}
-                                                                className="px-2 py-0.5 rounded text-[10px] font-bold text-white shadow-sm"
-                                                                style={{ backgroundColor: role.color }}
-                                                            >
-                                                                {role.name}
-                                                            </span>
-                                                        ) : null;
-                                                    })
-                                                )}
-                                            </div>
-                                        </td>
-                                        <td className="px-6 py-4 text-sm text-muted-foreground">
-                                            {new Date(member.joinedAt).toLocaleDateString()}
-                                        </td>
-                                        <td className="px-6 py-4 text-right">
-                                            <button
-                                                onClick={() => removeStaffMutation.mutate(member.userId)}
-                                                className="p-2 text-muted-foreground hover:text-destructive hover:bg-destructive/10 rounded-lg transition-colors"
-                                                title="Remove Member"
-                                            >
-                                                <Trash2 size={16} />
-                                            </button>
-                                        </td>
-                                    </tr>
-                                ))}
-                                {staff?.length === 0 && (
-                                    <tr>
-                                        <td colSpan={4} className="px-6 py-12 text-center text-muted-foreground italic">
-                                            No staff members added yet. Invite your first team member!
-                                        </td>
-                                    </tr>
-                                )}
-                            </tbody>
-                        </table>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                        {staff?.map((member: any) => (
+                            <motion.div
+                                key={member.id}
+                                layout
+                                initial={{ opacity: 0, scale: 0.9 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                transition={{ duration: 0.5 }}
+                            >
+                                <InteractiveTeamCard
+                                    name={`${member.user.firstName} ${member.user.lastName}`}
+                                    role={member.roleIds.map((rid: string) => roles?.find((r: any) => r.id === rid)?.name).join(', ') || 'Staff Member'}
+                                    image={member.user.profilePhotoUrl}
+                                    initials={member.user.firstName[0]}
+                                    email={member.user.email}
+                                    color={roles?.find((r: any) => member.roleIds.includes(r.id))?.color}
+                                />
+                                <div className="mt-4 flex justify-center">
+                                    <button
+                                        onClick={() => removeStaffMutation.mutate(member.userId)}
+                                        className="text-xs font-bold text-muted-foreground hover:text-destructive transition-colors flex items-center gap-2 px-4 py-2 rounded-xl hover:bg-destructive/10"
+                                    >
+                                        <Trash2 size={14} />
+                                        Relieve of Duty
+                                    </button>
+                                </div>
+                            </motion.div>
+                        ))}
+                        {staff?.length === 0 && (
+                            <div className="col-span-full py-32 rounded-[3.5rem] border-2 border-dashed border-white/5 bg-white/[0.02] flex flex-col items-center justify-center text-center">
+                                <Users size={64} className="text-muted-foreground/20 mb-6" />
+                                <p className="text-xl font-bold text-muted-foreground italic">Your force is empty. Start expanding.</p>
+                                <button
+                                    onClick={() => setIsAddMemberModalOpen(true)}
+                                    className="mt-6 text-primary font-black uppercase tracking-[0.2em] text-sm hover:translate-y-[-2px] transition-transform"
+                                >
+                                    + Recruit Member
+                                </button>
+                            </div>
+                        )}
                     </div>
                 </div>
             )}

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
-import axios from 'axios';
+import { api } from '@/lib/api';
 import { FileUp, Send, X, Paperclip, AlertCircle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { toast } from 'react-hot-toast';
@@ -20,7 +20,7 @@ const SubmissionModal: React.FC<SubmissionModalProps> = ({ eventId, isOpen, onCl
 
     const mutation = useMutation({
         mutationFn: async (data: any) => {
-            await axios.post(`/api/events/${eventId}/submissions`, data);
+            await api.post(`/events/${eventId}/submissions`, data);
         },
         onSuccess: () => {
             toast.success('Project submitted successfully!');

@@ -24,7 +24,7 @@ export function useJudges(eventId: string) {
     return useQuery({
         queryKey: ['judges', eventId],
         queryFn: async () => {
-            const { data } = await api.get(`/admin/events/${eventId}/judges`);
+            const { data } = await api.get(`/admin/events/${eventId}/judges/`);
             return data.judges as Judge[];
         },
         enabled: !!eventId,
@@ -36,7 +36,7 @@ export function useAddJudge(eventId: string) {
 
     return useMutation({
         mutationFn: async (payload: { userId: string; expertiseArea?: string; affiliation?: string; bio?: string }) => {
-            const { data } = await api.post(`/admin/events/${eventId}/judges`, payload);
+            const { data } = await api.post(`/admin/events/${eventId}/judges/`, payload);
             return data;
         },
         onSuccess: () => {
@@ -54,7 +54,7 @@ export function useRemoveJudge(eventId: string) {
 
     return useMutation({
         mutationFn: async (judgeId: string) => {
-            await api.delete(`/admin/events/${eventId}/judges/${judgeId}`);
+            await api.delete(`/admin/events/${eventId}/judges/${judgeId}/`);
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['judges', eventId] });

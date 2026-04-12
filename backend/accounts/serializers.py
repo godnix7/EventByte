@@ -35,10 +35,14 @@ class RegisterSerializer(serializers.Serializer):
     role_choice = serializers.ChoiceField(choices=['participant', 'organizer'], default='participant')
 
     def validate(self, data):
-        if User.objects.filter(username=data['username']).exists():
-            raise serializers.ValidationError("Username already exists")
-        if User.objects.filter(email=data['email']).exists():
-            raise serializers.ValidationError("Email already exists")
+        errors = {}
+        if User.objects.filter(username=data.get('username')).exists():
+            errors['username'] = "Username already exists"
+        if User.objects.filter(email=data.get('email')).exists():
+            errors['email'] = "Email already exists"
+            
+        if errors:
+            raise serializers.ValidationError(errors)
         return data
 
     def create(self, validated_data):

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import axios from 'axios';
+import { api } from '@/lib/api';
 import { Shield, MapPin, Users, Calendar, ArrowLeft, Globe, Twitter, Github, Mail, Share2, ChevronRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { format } from 'date-fns';
@@ -12,7 +12,7 @@ const ClubProfilePage: React.FC = () => {
     const { data: club, isLoading } = useQuery({
         queryKey: ['club', id],
         queryFn: async () => {
-            const res = await axios.get(`/api/clubs/${id}`);
+            const res = await api.get(`/clubs/${id}`);
             return res.data.club;
         }
     });
@@ -20,7 +20,7 @@ const ClubProfilePage: React.FC = () => {
     const { data: events } = useQuery({
         queryKey: ['club-events', id],
         queryFn: async () => {
-            const res = await axios.get('/api/events/discover', { params: { clubId: id } });
+            const res = await api.get('/events/discover', { params: { clubId: id } });
             return res.data.events;
         }
     });

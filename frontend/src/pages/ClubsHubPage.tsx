@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import axios from 'axios';
+import { api } from '@/lib/api';
 import { Users, Plus, Shield, ExternalLink, Search, Sparkles, LayoutGrid } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
@@ -13,7 +13,7 @@ const ClubsHubPage: React.FC = () => {
     const { data: clubs, isLoading } = useQuery({
         queryKey: ['clubs', search],
         queryFn: async () => {
-            const res = await axios.get('/api/clubs');
+            const res = await api.get('/clubs');
             return res.data.clubs;
         }
     });

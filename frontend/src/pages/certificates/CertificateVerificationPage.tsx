@@ -32,7 +32,7 @@ export default function CertificateVerificationPage() {
     const isValid = certificate && !isRevoked;
 
     return (
-        <div className="min-h-screen bg-background text-foreground flex flex-col items-center justify-center p-6 selection:bg-primary/30 relative overflow-hidden">
+        <div className="min-h-screen bg-background text-foreground flex flex-col items-center justify-center p-6 relative overflow-hidden">
             {/* Background elements */}
             <div className="fixed inset-0 z-0 pointer-events-none">
                 <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] rounded-full blur-[140px] opacity-20" style={{ backgroundColor: isValid ? '#10b981' : '#ef4444' }} />

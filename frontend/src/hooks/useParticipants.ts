@@ -28,7 +28,7 @@ export function useEventParticipants(eventId: string) {
     return useQuery({
         queryKey: ['participants', eventId],
         queryFn: async () => {
-            const { data } = await api.get(`/admin/events/${eventId}/participants`);
+            const { data } = await api.get(`/admin/events/${eventId}/participants/`);
             return data.participants as Participant[];
         },
         enabled: !!eventId,
@@ -40,7 +40,7 @@ export function useCheckInParticipant(eventId: string) {
 
     return useMutation({
         mutationFn: async (registrationNumber: string) => {
-            const { data } = await api.post(`/admin/events/${eventId}/checkin`, { registrationNumber });
+            const { data } = await api.post(`/admin/events/${eventId}/checkin/`, { registrationNumber });
             return data;
         },
         onSuccess: () => {

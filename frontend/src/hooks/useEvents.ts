@@ -6,7 +6,7 @@ export const useEvents = (options?: { public?: boolean; manage?: boolean }) => {
     return useQuery({
         queryKey: ['events', options],
         queryFn: async () => {
-            const { data } = await api.get('/events', { params: options });
+            const { data } = await api.get('/events/', { params: options });
             return data.events;
         },
     });
@@ -16,7 +16,7 @@ export const useEvent = (idOrSlug: string) => {
     return useQuery({
         queryKey: ['event', idOrSlug],
         queryFn: async () => {
-            const { data } = await api.get(`/events/${idOrSlug}`);
+            const { data } = await api.get(`/events/${idOrSlug}/`);
             return data.event;
         },
         enabled: !!idOrSlug,
@@ -27,7 +27,7 @@ export const useMyPermissions = (eventId: string) => {
     return useQuery({
         queryKey: ['event', eventId, 'my-permissions'],
         queryFn: async () => {
-            const { data } = await api.get(`/events/${eventId}/my-permissions`);
+            const { data } = await api.get(`/events/${eventId}/my-permissions/`);
             return data;
         },
         enabled: !!eventId,
@@ -38,7 +38,7 @@ export const useCreateEvent = () => {
     const queryClient = useQueryClient();
     return useMutation({
         mutationFn: async (payload: CreateEventInput) => {
-            const { data } = await api.post('/events', payload);
+            const { data } = await api.post('/events/', payload);
             return data.event;
         },
         onSuccess: () => {
@@ -50,7 +50,7 @@ export const useUpdateEvent = (id: string) => {
     const queryClient = useQueryClient();
     return useMutation({
         mutationFn: async (payload: any) => {
-            const { data } = await api.put(`/events/${id}`, payload);
+            const { data } = await api.put(`/events/${id}/`, payload);
             return data.event;
         },
         onSuccess: () => {
@@ -77,7 +77,7 @@ export const usePublishEvent = (id: string) => {
     const queryClient = useQueryClient();
     return useMutation({
         mutationFn: async () => {
-            const { data } = await api.post(`/events/${id}/publish`);
+            const { data } = await api.post(`/events/${id}/publish/`);
             return data.event;
         },
         onSuccess: () => {
@@ -90,7 +90,7 @@ export const useRegistrationFields = (eventId: string) => {
     return useQuery({
         queryKey: ['event', eventId, 'registration-fields'],
         queryFn: async () => {
-            const { data } = await api.get(`/events/${eventId}/registration-fields`);
+            const { data } = await api.get(`/events/${eventId}/registration-fields/`);
             return data.fields;
         },
         enabled: !!eventId,
@@ -101,7 +101,7 @@ export const useUpdateRegistrationFields = (eventId: string) => {
     const queryClient = useQueryClient();
     return useMutation({
         mutationFn: async (fields: any[]) => {
-            const { data } = await api.put(`/events/${eventId}/registration-fields`, { fields });
+            const { data } = await api.put(`/events/${eventId}/registration-fields/`, { fields });
             return data.fields;
         },
         onSuccess: () => {
@@ -114,7 +114,7 @@ export const useDeleteEvent = () => {
     const queryClient = useQueryClient();
     return useMutation({
         mutationFn: async (id: string) => {
-            const { data } = await api.delete(`/events/${id}`);
+            const { data } = await api.delete(`/events/${id}/`);
             return data;
         },
         onSuccess: () => {
