@@ -14,5 +14,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Build Docker Images
-        run: docker-compose -f docker-compose.prod.yml build
+      - name: Deploy to Vercel
+        run: |
+          echo "Deploying to Vercel via GitHub integration..."
+          echo "Please ensure you have connected this repository to your Vercel project."
