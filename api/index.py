@@ -1,3 +1,4 @@
+# Vercel Serverless Entry Point
 import os
 import sys
 from mangum import Mangum
