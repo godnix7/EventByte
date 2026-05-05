@@ -53,7 +53,7 @@ export const InteractiveTeamCard = ({ name, role, image, initials, email, color 
                 rotateY,
                 transformStyle: 'preserve-3d',
             }}
-            className="group relative h-[400px] w-full max-w-[320px] rounded-[2.5rem] bg-card/40 backdrop-blur-xl border border-white/10 p-1 flex flex-col items-center justify-center transition-all duration-500 hover:border-primary/50 hover:shadow-[0_0_50px_-12px_rgba(var(--primary)/0.5)] overflow-hidden"
+            className="group relative h-[420px] w-full max-w-[340px] rounded-[3rem] glass-panel p-1 flex flex-col items-center justify-center transition-all duration-700 hover:border-primary/40 overflow-hidden"
         >
             {/* Glossy Overlay */}
             <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent pointer-events-none z-20" />

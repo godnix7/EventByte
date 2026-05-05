@@ -8,3 +8,13 @@ coverage/
 *.log
 .pnpm-debug.log*
 .yarn-integrity
+
+# Python
+venv/
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+.env.backend
