@@ -2,7 +2,7 @@ import { appConfig } from '@/config/app.config';
 import { AppLogo } from '@/components/shared/AppLogo';
 import { Link } from 'react-router-dom';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { Sparkles, Zap, Shield, Globe, Users, LogOut, ArrowRight, MousePointer2, Calendar, Trophy } from 'lucide-react';
+import { Sparkles, Zap, Globe, Users, LogOut, ArrowRight, MousePointer2, Calendar, Trophy } from 'lucide-react';
 import { useAuthStore } from '@/store/authStore';
 import { InteractiveTeamCard } from '@/components/shared/InteractiveTeamCard';
 import { useRef } from 'react';
