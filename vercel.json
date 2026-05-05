@@ -1,0 +1,18 @@
+{
+  "version": 2,
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "backend/vercel_handler.py"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "frontend/dist/$1"
+    }
+  ],
+  "functions": {
+    "backend/vercel_handler.py": {
+      "runtime": "vercel-python@0.0.0"
+    }
+  }
+}

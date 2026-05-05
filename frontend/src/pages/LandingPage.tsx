@@ -188,27 +188,13 @@ export default function LandingPage() {
                         <p className="text-white/40 max-w-xl text-lg font-medium">Building the infrastructure for the next generation of human connection.</p>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-12 justify-items-center">
+                    <div className="flex justify-center">
                         <InteractiveTeamCard 
                             name="Nischay" 
                             role="Lead Visionary" 
                             initials="N" 
                             color="#A855F7"
                             socials={{ github: "https://github.com/nischay" }}
-                        />
-                        <InteractiveTeamCard 
-                            name="Alex Chen" 
-                            role="Chief Architect" 
-                            image="https://i.pravatar.cc/150?u=alex"
-                            color="#06B6D4"
-                            socials={{ github: "https://github.com/alex" }}
-                        />
-                        <InteractiveTeamCard 
-                            name="Elena Rodriguez" 
-                            role="Creative Director" 
-                            image="https://i.pravatar.cc/150?u=elena"
-                            color="#EC4899"
-                            socials={{ twitter: "https://twitter.com/elena" }}
                         />
                     </div>
                 </section>
