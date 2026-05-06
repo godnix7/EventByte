@@ -43,11 +43,16 @@ services:
       - DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY:-your-secret-key}
       - DJANGO_ALLOWED_HOSTS=${DJANGO_ALLOWED_HOSTS:-*}
       - DJANGO_DEBUG=${DJANGO_DEBUG:-True}
+      - USE_SQLITE=${USE_SQLITE:-False}
+      - SQLITE_DB_PATH=${SQLITE_DB_PATH:-/app/data/db.sqlite3}
     ports:
       - "8000:8000"
+    volumes:
+      - ./backend/data:/app/data
     depends_on:
       postgres:
         condition: service_healthy
+        required: false
       redis:
         condition: service_healthy
 
